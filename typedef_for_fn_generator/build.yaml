@@ -1,0 +1,15 @@
+targets:
+  $default:
+    builders:
+      typedef_for_fn_generator|typedef_for_fn:
+        enabled: true
+
+builders:
+  typedef_for_fn:
+    target: ":typedef_for_fn_generator"
+    import: "package:typedef_for_fn_generator/builder.dart"
+    builder_factories: ["typedefForFn"]
+    build_extensions: {".dart": [".typedefForFn.g.part"]}
+    auto_apply: dependents
+    build_to: cache
+    applies_builders: ["source_gen|combining_builder"]

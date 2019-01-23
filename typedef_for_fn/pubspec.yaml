@@ -1,0 +1,13 @@
+name: typedef_for_fn
+description: Creates a named typedef for each function with the annotation
+version: 1.0.0
+author: Adrian
+# homepage: https://github.com/...
+
+environment:  
+  sdk: ">=2.0.0 <3.0.0" 
+
+dependencies: 
+
+dev_dependencies:  
+  test: 1.3.4
