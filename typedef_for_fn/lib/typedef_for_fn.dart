@@ -1,3 +1,3 @@
-library typedefs_for_fns;
+library typedef_for_fn;
 
 export 'src/TypedefForFn.dart';
