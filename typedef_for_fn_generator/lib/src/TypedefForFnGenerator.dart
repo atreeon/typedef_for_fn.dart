@@ -9,12 +9,15 @@ class TypedefForFnGenerator extends GeneratorForAnnotation<TypedefForFn> {
   @override
   FutureOr<String> generateForAnnotatedElement(
       Element element, ConstantReader annotation, BuildStep buildStep) {
-    print(element.name);
+    // print(element.name);
     var sb = StringBuffer();
     // sb.writeln("//" + element.name);
     // sb.writeln("//" + annotation.toString());
     sb.writeln("//" + element.toString());
-    sb.writeln(functionDefToTypeDef(element.toString()));
+    // sb.writeln("//" + element.kind.toString());
+    // sb.writeln("//" + element.name.toString());
+
+    // sb.writeln(functionDefToTypeDef(element.toString()));
 
     return sb.toString();
   }

@@ -1,3 +1,25 @@
+import 'package:adi_helpers/regexH.dart';
+import 'package:adi_helpers/stringH.dart';
+
+//try it
+//work out what to do for dynamic problem (because code not generated fn = dynamic!), manual copy probably
+
+///Takes a function definition and converts it to a function type
+///inp: <T>(T, List<int>, int) → int fn
+///out: int Function<T>(T, List<int>, int)
+String fnDefToFnType(String fnDef) {
+  return returnType(fnDef) + //
+      " Function" +
+      genericDef(fnDef) +
+      "(" +
+      splitParameters(fnDef) +
+      ")";
+}
+
+///Creates a typedef from a function definition, this
+///WARNING: Does not handle generic functions as a function definition parameter
+///inp: f1<T>(int v1, T v2) → T
+///out: typedef fn_f1 = T Function<T>(int, T);
 String functionDefToTypeDef(String functionDef) {
   return "typedef " + //
       functionName(functionDef) +
@@ -5,46 +27,75 @@ String functionDefToTypeDef(String functionDef) {
       returnType(functionDef) +
       " Function" +
       genericDef(functionDef) +
-      parameterTypes(functionDef) +
-      ";";
+      "(" +
+      splitParameters(functionDef) +
+      ");";
 }
 
+///From function definition gets the function name for the type definition
+///inp: f1<T>(int v1, T v2) → T
+///out: fn_f1
 String functionName(String functionDef) {
   var rx = RegExp(r"^([a-zA-Z0-9_$]*)");
   var first = rx.firstMatch(functionDef);
   return "fn_" + first[0];
 }
 
+///gets the generic part of a function definition
+///inp: f1<T>(int v1, T v2) → T
+///out: <T>
 String genericDef(String functionDef) {
   var rx1 = RegExp(r".+?(?=\()");
   var first1 = rx1.firstMatch(functionDef);
+  if (first1 == null) return "";
 
   var rx2 = RegExp(r"(<[a-zA-Z0-9_$, ]*>)");
   var first = rx2.firstMatch(first1[0]);
   return first == null ? "" : first[0];
 }
 
-String parameterTypes(String functionDef) {
-  //f1<T>(int v1, T v2) → T || (int v1, T v2)
-  var rx = RegExp(r"\((.*?)\)");
-  var first = rx.firstMatch(functionDef);
-  if (first == null) return "()";
+///From a function definition we extract and format the parameters
+/// including the typed functions
+///WARNING: Does not handle generic functions as a function definition parameter
+///inp: f1<T>(int v1, T v2) → T
+///out: int, T
+String splitParameters(String functionDef) {
+  var parameters = getInBracketsRight(functionDef);
+  parameters = parameters.substring(1, parameters.length - 1);
+  if (parameters == "()") return "";
 
-  //remove brackets || int v1, T v2
-  var stuff = first[0].replaceAll("(", "");
-  var stuff2 = stuff.replaceAll(")", "");
+  var paramsMinusFunctions = parameters;
+  var fnParams = List<String>();
 
-  //split by comma || ["int v1", "T v2"]
-  var result = stuff2.split(", ");
-  if (result.length == 0 || result[0].length == 0) return "()";
+  while (paramsMinusFunctions.indexOf("→") > 0) {
+    var arrowIndex = paramsMinusFunctions.indexOf("→");
+    var fnStartPos = bracketPositionRight(parameters.substring(0, arrowIndex)).value.start;
+    var fnReturnTypePosition =
+        arrowIndex + 2 + regExIndexOf1(r"[\s,(]", parameters.substring(arrowIndex + 2));
+    var fnDef = parameters.substring(fnStartPos - 1, fnReturnTypePosition);
+    var fnType = fnDefToFnType(fnDef);
+    fnParams.add(fnType);
+    paramsMinusFunctions = // _x_ placeholder to preserver order, not so clean!
+        paramsMinusFunctions.replaceRange(fnStartPos - 1, fnReturnTypePosition, "_x_");
+  }
 
-  //map take first word || ["int", "T"]
-  var result2 = result.map((x) => x.substring(0, x.indexOf(" "))).toList();
+  var normalParams = paramsMinusFunctions.split(",");
+  normalParams = normalParams.map((x) => firstWord(x)).toList();
 
-  return result2.toString().replaceAll("[", "(").replaceAll("]", ")");
+  for (var i = 0; i < normalParams.length; i++) {
+    if (normalParams[i] == "_x_") normalParams[i] = fnParams.removeAt(0);
+  }
+
+  return normalParams.toString().replaceAll("[", "").replaceAll("]", "");
 }
 
+///From a function defnition we extract the return type
+///inp: f1<T>(int v1, T v2) → T
+///out: List<int>
 String returnType(String functionDef) {
-  var location = functionDef.indexOf(" → ");
-  return functionDef.substring(location + 3);
+  var location = functionDef.lastIndexOf(" → ");
+  var afterArrow = functionDef.substring(location);
+  var secondWord = afterArrow.split(" ")[2];
+  return secondWord;
 }
+

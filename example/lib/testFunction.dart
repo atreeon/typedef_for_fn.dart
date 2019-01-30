@@ -15,3 +15,15 @@ int f4(String input) => 5;
 
 @TypedefForFn()
 String f5() => "blah";
+
+typedef fn_a = List<int> Function(int, List<int>, int);
+
+@TypedefForFn()
+List<int> f6(fn_a fn, int a) => fn(5, [1, 2], a);
+
+typedef fn_b = int Function<T>(T, List<int>, int);
+
+@TypedefForFn()
+List<int> f7(fn_b fn, int a) => [
+      fn(5, [1, 2], a)
+    ];
