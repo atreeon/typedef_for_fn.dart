@@ -21,9 +21,25 @@ typedef fn_a = List<int> Function(int, List<int>, int);
 @TypedefForFn()
 List<int> f6(fn_a fn, int a) => fn(5, [1, 2], a);
 
-typedef fn_b = int Function<T>(T, List<int>, int);
+typedef fn_b = int Function();
+int f7(fn_b fn) => 1;
 
 @TypedefForFn()
-List<int> f7(fn_b fn, int a) => [
-      fn(5, [1, 2], a)
-    ];
+List<int> f8(fn_a fn, int a) {
+  return fn(5, [1, 2], a);
+}
+
+@TypedefForFn()
+int f9(fn_f4 fn, int a) {
+  return fn("blah") + 2;
+}
+
+// lastWordsLearntG(ArticleAndWordG _articleAndWordG, BatchType currentBatchType, ((List<UserLecture>, List<UserLesson>) → List<UserLectureUserLesson>, List<int>, List<UserLecture>, List<UserLesson>) → List<UserLectureUserLesson> userLectureUserLessonByLectureIds, (List<UserLecture>, List<UserLesson>) → List<UserLectureUserLesson> userLectureLessonsG, List<TestBatchItem> testBatchItems, List<LectureBatchItem> lectureBatchItems, List<Lecture> lectures, List<Translation> translations, List<UserLecture> userLectures, List<UserLesson> userLessons) → List<LastWordLearnt>
+
+//at the moment generic function defintions don't work
+// typedef fn_b = int Function<T>(T, List<int>, int);
+
+// @TypedefForFn()
+// List<int> f7(fn_b fn, int a) => [
+//       fn(5, [1, 2], a)
+//     ];
