@@ -12,7 +12,11 @@ void main() {
     "@TypedefForFn() String f5() => " "blah" ";",
     "typedef fn_a = List<int> Function(int, List<int>, int)",
     "@TypedefForFn() List<int> f6(fn_a fn, int a) => fn(5, [1, 2], a);",
-    "@TypedefForFn() List<int> f8(fn_a fn, int a) {fn(5, [1, 2], a);}"
+    "@TypedefForFn() List<int> f8(fn_a fn, int a) {fn(5, [1, 2], a);}",
+    "@TypedefForFn(name: "
+        "blah"
+        ") int Function(String) f10(fn_f4 fn) => (String s) => 5;",
+    "@TypedefForFn(name: " "blah" ") int f11(int a) => a + 2;",
   ];
 
   final fullFn1 = r"@TypedefForFn() T f1<T>(int v1, T v2) => v2;";
@@ -26,9 +30,14 @@ void main() {
   final fnDef3 = r"List<int> f8(fn_a fn, int a)";
 
   group("createTypeDef", () {
-    void exp_createTypeDef(String fnName, String expected) {
-      var result = createTypeDef(fnName, codeLines);
-      expect(result, expected);
+    void exp_createTypeDef(String fnName, String expected, {String pre}) {
+      if (pre == null) {
+        var result = createTypeDef(fnName, codeLines);
+        expect(result, expected);
+      } else {
+        var result = createTypeDef(fnName, codeLines, pre: pre);
+        expect(result, expected);
+      }
     }
 
     test(
@@ -57,15 +66,30 @@ void main() {
         "8",
         () => exp_createTypeDef(
             "f8", "typedef fn_f8 = List<int> Function(fn_a fn, int a);"));
+
+    // test(
+    //     "10",
+    //     () => exp_createTypeDef(
+    //         "f10", "typedef fn_f10 = int Function(String s);"));
+
+    test(
+        "11",
+        () => exp_createTypeDef(
+            "f11", "typedef blah_f11 = int Function(int a);",
+            pre: "blah_"));
   });
 
   group("getFnDef", () {
     void exp_getFnDef(String fullFn, String expected) =>
         expectGen(getFnDef, fullFn, expected);
 
+    var fullFn11 = "@TypedefForFn(name: " "blah" ") int f11(int a) => a + 2;";
+    var fnDef11 = "int f11(int a)";
+
     test("1", () => exp_getFnDef(fullFn1, fnDef1));
     test("2", () => exp_getFnDef(fullFn2, fnDef2));
     test("3", () => exp_getFnDef(fullFn3, fnDef3));
+    test("11", () => exp_getFnDef(fullFn11, fnDef11));
   });
 }
 

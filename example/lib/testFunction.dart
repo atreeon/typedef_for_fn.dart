@@ -34,6 +34,13 @@ int f9(fn_f4 fn, int a) {
   return fn("blah") + 2;
 }
 
+// @TypedefForFn(name: "blah")
+// int Function(String) f10(fn_f4 fn) => (String s) => 5;
+
+@TypedefForFn(name: "blah")
+int f11(int a) => a + 2;
+
+
 // lastWordsLearntG(ArticleAndWordG _articleAndWordG, BatchType currentBatchType, ((List<UserLecture>, List<UserLesson>) → List<UserLectureUserLesson>, List<int>, List<UserLecture>, List<UserLesson>) → List<UserLectureUserLesson> userLectureUserLessonByLectureIds, (List<UserLecture>, List<UserLesson>) → List<UserLectureUserLesson> userLectureLessonsG, List<TestBatchItem> testBatchItems, List<LectureBatchItem> lectureBatchItems, List<Lecture> lectures, List<Translation> translations, List<UserLecture> userLectures, List<UserLesson> userLessons) → List<LastWordLearnt>
 
 //at the moment generic function defintions don't work

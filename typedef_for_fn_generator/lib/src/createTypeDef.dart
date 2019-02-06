@@ -1,18 +1,21 @@
 import 'package:adi_helpers/regexH.dart';
 import 'package:adi_helpers/stringCurriedH.dart';
 
-String createTypeDef(String fnName, List<String> codeLines) {
-  var x1 = codeLines.where(contains("@TypedefForFn()"));
+//name and level too
+String createTypeDef(String fnName, List<String> codeLines,
+    {String pre = "fn_"}) {
+  var x1 = codeLines.where(contains("@TypedefForFn"));
   var x2 = x1.map(getFnDef);
   var x3 = x2.firstWhere(contains(fnName));
   var x4 = x3.replaceFirst(fnName, "Function");
-  var x5 = "typedef fn_$fnName = $x4;";
+  var x5 = "typedef $pre$fnName = $x4;";
   return x5;
 }
 
 String getFnDef(String fullFn) {
   var y1 = regExIndexOf1("=>|{", fullFn);
-  var x1 = fullFn.substring(16, y1).trim();
+  var z1 = fullFn.indexOf(")") + 1;
+  var x1 = fullFn.substring(z1, y1).trim();
   return x1;
 }
 
