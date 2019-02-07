@@ -41,6 +41,8 @@ int f9(fn_f4 fn, int a) {
 @TypedefForFn(pre: "blah")
 int f11(int a) => a + 2;
 
+@TypedefForFn(exNames: ["a", "b"])
+int f12(int a, String b) => a + 2;
 
 // lastWordsLearntG(ArticleAndWordG _articleAndWordG, BatchType currentBatchType, ((List<UserLecture>, List<UserLesson>) → List<UserLectureUserLesson>, List<int>, List<UserLecture>, List<UserLesson>) → List<UserLectureUserLesson> userLectureUserLessonByLectureIds, (List<UserLecture>, List<UserLesson>) → List<UserLectureUserLesson> userLectureLessonsG, List<TestBatchItem> testBatchItems, List<LectureBatchItem> lectureBatchItems, List<Lecture> lectures, List<Translation> translations, List<UserLecture> userLectures, List<UserLesson> userLessons) → List<LastWordLearnt>
 
