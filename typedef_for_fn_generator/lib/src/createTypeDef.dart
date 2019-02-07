@@ -3,20 +3,32 @@ import 'package:adi_helpers/stringCurriedH.dart';
 
 //name and level too
 String createTypeDef(String fnName, List<String> codeLines,
-    {String pre = "fn_"}) {
+    {String pre, int levels}) {
+  if (pre == null) pre = "fn_";
+  if (levels == null) levels = 0;
+
   var x1 = codeLines.where(contains("@TypedefForFn"));
-  var x2 = x1.map(getFnDef);
-  var x3 = x2.firstWhere(contains(fnName));
+  var x2 = x1.firstWhere(contains(fnName));
+  var x3 = getFnDef(x2, levels: levels);
   var x4 = x3.replaceFirst(fnName, "Function");
   var x5 = "typedef $pre$fnName = $x4;";
   return x5;
 }
 
-String getFnDef(String fullFn) {
-  var y1 = regExIndexOf1("=>|{", fullFn);
+String getFnDef(String fullFn, {int levels}) {
+  if (levels == null) levels = 0;
+
   var z1 = fullFn.indexOf(")") + 1;
-  var x1 = fullFn.substring(z1, y1).trim();
-  return x1;
+
+  int y1;
+  if (levels > 0) {
+    y1 = fullFn.substring(z1).indexOf(")") + z1 + 1;
+  } else {
+    y1 = regExIndexOf1("=>|{", fullFn);
+  }
+
+  var r = fullFn.substring(z1, y1).trim();
+  return r;
 }
 
 // Obsolete, old code

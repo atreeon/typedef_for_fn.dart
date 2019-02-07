@@ -20,18 +20,25 @@ class TypedefForFnGenerator extends GeneratorForAnnotation<TypedefForFn> {
     //   sb.writeln("//" + annotation.read('name').stringValue);
     // }
 
-for (var entity in element.unit.childEntities) {
-  sb.writeln("//" + entity.toString());
-}
+// for (var entity in element.unit.childEntities) {
+//   sb.writeln("//" + entity.toString());
+// }
+
+    String pre = null;
+    if (!annotation.read('pre').isNull)
+      pre = annotation.read('pre').stringValue;
+
+    int levels = null;
+    if (!annotation.read('levels').isNull)
+      levels = annotation.read('levels').intValue;
 
     sb.writeln("//" + element.displayName);
-    // sb.writeln(createTypeDef(element.displayName, childElements));
+    sb.writeln(createTypeDef(element.displayName, childElements,
+        pre: pre, levels: levels));
 
     return sb.toString();
   }
 }
-
-
 
 //Obsolete get data from code gen
 // for (var item in childElements) {

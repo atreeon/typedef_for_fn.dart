@@ -34,10 +34,11 @@ int f9(fn_f4 fn, int a) {
   return fn("blah") + 2;
 }
 
-// @TypedefForFn(name: "blah")
+//obsoleted levels
+// @TypedefForFn(pre: "blah", levels: 1)
 // int Function(String) f10(fn_f4 fn) => (String s) => 5;
 
-@TypedefForFn(name: "blah")
+@TypedefForFn(pre: "blah")
 int f11(int a) => a + 2;
 
 

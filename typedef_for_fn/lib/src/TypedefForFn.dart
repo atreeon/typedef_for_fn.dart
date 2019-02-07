@@ -1,6 +1,6 @@
 class TypedefForFn {
-  final String name;
-  final int level;
+  final String pre;
+  final int levels;
 
-  const TypedefForFn({this.name, this.level});
+  const TypedefForFn({this.pre, this.levels});
 }
