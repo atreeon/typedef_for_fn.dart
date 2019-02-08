@@ -1,3 +1,4 @@
+import 'package:adi_helpers/mapH.dart';
 import 'package:adi_helpers/regexH.dart';
 import 'package:adi_helpers/stringCurriedH.dart';
 import 'package:adi_helpers/stringH.dart';
@@ -11,28 +12,28 @@ String createTypeDef(String fnName, List<String> codeLines,
   var x2 = x1.firstWhere(contains(fnName));
   var x3 = getFnDef(x2);
   var x4 = x3.replaceFirst(fnName, "Function");
-  var x5 = "typedef $pre$fnName = $x4;";
+
+  var y1 = formatFn(x4, exNames);
+  var x5 = "typedef $pre$fnName = $y1;";
 
   return x5;
 }
 
-String formatTypeDef(String fn, {List<String> exNames}) {
+String formatFn(String fn, List<String> exNames) {
   if (exNames.length == 0) return fn;
 
   //get parameters
-  var x1 = getParameters(fn);
+  var params = getParameters(fn);
 
   //remove any that need removing
-  x1.removeWhere((x, _) => exNames.contains(x));
+  params.removeWhere((x, _) => exNames.contains(x));
 
-  var y1 = getInBracketsRight(fn);
+  var x1 = getInBracketsRight(fn);
+  var y1 = fn.replaceFirst(x1, "¬`");
+  var x2 = map(params, (k, v) => "$v $k").join(", ");
+  var r = y1.replaceFirst("¬`", "($x2)");
 
-  var z1 = fn.replaceFirst(y1, "¬`");
-
-  
-
-  //rightmostBrackets(x4).replace("")
-  //write parameters
+  return r;
 }
 
 ///Gets a list of parameters from a function definition
@@ -60,11 +61,43 @@ Map<String, String> getParameters(String fn) {
   return r;
 }
 
-String getFnDef(String fullFn) {
-  var z1 = fullFn.indexOf(")") + 1;
-  var y1 = regExIndexOf1("=>|{", fullFn);
-  var r = fullFn.substring(z1, y1).trim();
+String rmAnnotations(String fullFn) {
+  var level = 0;
+  var x1 = StringBuffer();
+  fullFn.runes.forEach((x) {
+    var char = String.fromCharCode(x);
+    if (char == "@") {
+      level++;
+    } else if (char == ")" && level > 0) {
+      level--;
+    } else {
+      if (level <= 0) x1.write(char);
+    }
+  });
+  
+  var x2 = x1.toString();
+  var r = (x2[0] == ")" ? x2.substring(1) : x2).trim();
   return r;
+}
+
+String rmBody(String fnNoAnnotations) {
+  var openingBracketReached = false;
+  var closingBracketReached = false;
+  var x1 = StringBuffer();
+
+  fnNoAnnotations.runes.forEach((x) {
+    var char = String.fromCharCode(x);
+    if (char == "(") openingBracketReached = true;
+    if (char == ")") closingBracketReached = true;
+    if (!(openingBracketReached && closingBracketReached)) x1.write(char);
+  });
+  return x1.toString() + ")";
+}
+
+String getFnDef(String fullFn) {
+  var x1 = rmAnnotations(fullFn);
+  var x2 = rmBody(x1);
+  return x2;
 }
 
 // Obsolete, old code

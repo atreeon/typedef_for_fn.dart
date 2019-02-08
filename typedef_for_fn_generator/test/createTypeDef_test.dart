@@ -1,5 +1,4 @@
 import "package:test/test.dart";
-import 'package:adi_helpers/testH.dart';
 import 'package:typedef_for_fn_generator/src/createTypeDef.dart';
 
 void main() {
@@ -18,6 +17,7 @@ void main() {
     //     ") int Function(String) f10(fn_f4 fn) => (String s) => 5;",
     "@TypedefForFn(name: \"blah\") int f11(int a) => a + 2;",
     "@TypedefForFn(exNames: [\"a\", \"b\"]) int f12(int a, String b) => a + 2;",
+    "@TypedefForFn(exNames: [\"a\", \"b\"]) int f13<T>(int a, Map<int, String> b, String c, {T d}) => a + 2;",
   ];
 
   final fullFn1 = r"@TypedefForFn() T f1<T>(int v1, T v2) => v2;";
@@ -68,6 +68,15 @@ void main() {
         () => exp_createTypeDef(
             "f11", "typedef blah_f11 = int Function(int a);",
             pre: "blah_"));
+    test(
+        "12",
+        () => exp_createTypeDef("f12", "typedef fn_f12 = int Function();",
+            exNames: ["a", "b"]));
+    test(
+        "13",
+        () => exp_createTypeDef(
+            "f13", "typedef fn_f13 = int Function<T>(String c, {T d});",
+            exNames: ["a", "b"]));
   });
 
   group("getFnDef", () {
@@ -83,11 +92,42 @@ void main() {
     test("2", () => exp_getFnDef(fullFn2, fnDef2));
     test("3", () => exp_getFnDef(fullFn3, fnDef3));
     test("11", () => exp_getFnDef(fullFn11, fnDef11));
+    test(
+        "13",
+        () => exp_getFnDef(
+            "@TypedefForFn(exNames: [\"a\", \"b\"]) int f13<T>(int a, Map<int, String> b, String c, {T d}) => a + 2;",
+            "int f13<T>(int a, Map<int, String> b, String c, {T d})"));
+    test(
+        "a",
+        () => exp_getFnDef(
+            "@meta1() @meta2() int fa({a}) => a + 2;", "int fa({a})"));
   });
 
-  group("example", () {
-    test("1", () => expect(1, 1));
-    test("2", () => expect(1, 1));
+  group("formatFn", () {
+    void exp_formatFn(String fn, List<String> exNames, String expected) {
+      var result = formatFn(fn, exNames);
+      expect(result, expected);
+    }
+
+    test("1", () {
+      exp_formatFn(
+          "int Function(int a, String b)", [], "int Function(int a, String b)");
+    });
+    test("2", () {
+      exp_formatFn(
+          "int Function(int a, String b)", ["b"], "int Function(int a)");
+    });
+    test("3", () {
+      exp_formatFn(
+          "int Function(String a, List<String> b, {String c, List<String> d})",
+          ["a"],
+          "int Function(List<String> b, {String c, List<String> d})");
+    });
+
+    test("4", () {
+      exp_formatFn("int Function(Map<int, String> a, String b)", ["b"],
+          "int Function(Map<int, String> a)");
+    });
   });
 
   group("getParameters", () {

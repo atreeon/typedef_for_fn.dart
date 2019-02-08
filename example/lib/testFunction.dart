@@ -34,22 +34,17 @@ int f9(fn_f4 fn, int a) {
   return fn("blah") + 2;
 }
 
-//obsoleted levels
-// @TypedefForFn(pre: "blah", levels: 1)
-// int Function(String) f10(fn_f4 fn) => (String s) => 5;
-
 @TypedefForFn(pre: "blah")
 int f11(int a) => a + 2;
 
 @TypedefForFn(exNames: ["a", "b"])
 int f12(int a, String b) => a + 2;
 
-// lastWordsLearntG(ArticleAndWordG _articleAndWordG, BatchType currentBatchType, ((List<UserLecture>, List<UserLesson>) → List<UserLectureUserLesson>, List<int>, List<UserLecture>, List<UserLesson>) → List<UserLectureUserLesson> userLectureUserLessonByLectureIds, (List<UserLecture>, List<UserLesson>) → List<UserLectureUserLesson> userLectureLessonsG, List<TestBatchItem> testBatchItems, List<LectureBatchItem> lectureBatchItems, List<Lecture> lectures, List<Translation> translations, List<UserLecture> userLectures, List<UserLesson> userLessons) → List<LastWordLearnt>
+@TypedefForFn(exNames: ["a", "b"])
+int f13<T>(int a, Map<int, String> b, String c, {T d}) => a + 2;
 
-//at the moment generic function defintions don't work
-// typedef fn_b = int Function<T>(T, List<int>, int);
 
-// @TypedefForFn()
-// List<int> f7(fn_b fn, int a) => [
-//       fn(5, [1, 2], a)
-//     ];
+//obsoleted levels
+// @TypedefForFn(pre: "blah", levels: 1)
+// int Function(String) f10(fn_f4 fn) => (String s) => 5;
+
