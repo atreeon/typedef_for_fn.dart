@@ -6,7 +6,7 @@ String createTypeDef(String fnName, List<String> codeLines,
     {String pre, List<String> exNames}) {
   if (pre == null) pre = "fn_";
   if (exNames == null) exNames = List<String>();
-  
+   
   var x1 = codeLines.where(contains("@TypedefForFn"));
   var x2 = x1.firstWhere(contains(fnName));
   var x3 = getFnDef(x2);
