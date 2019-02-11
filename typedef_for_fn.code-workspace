@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "example"
+		},
+		{
+			"path": "typedef_for_fn"
+		},
+		{
+			"path": "typedef_for_fn_generator"
+		}
+	]
+}
