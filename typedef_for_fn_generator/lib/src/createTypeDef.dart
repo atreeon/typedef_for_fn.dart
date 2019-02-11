@@ -1,7 +1,7 @@
 import 'package:adi_helpers/mapH.dart';
 import 'package:adi_helpers/stringCurriedH.dart';
 import 'package:adi_helpers/stringH.dart';
-
+ 
 String createTypeDef(String fnName, List<String> codeLines,
     {String pre, List<String> exNames}) {
   if (pre == null) pre = "fn_";
