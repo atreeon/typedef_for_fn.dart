@@ -18,6 +18,7 @@ void main() {
     "@TypedefForFn(name: \"blah\") int f11(int a) => a + 2;",
     "@TypedefForFn(exNames: [\"a\", \"b\"]) int f12(int a, String b) => a + 2;",
     "@TypedefForFn(exNames: [\"a\", \"b\"]) int f13<T>(int a, Map<int, String> b, String c, {T d}) => a + 2;",
+    "@TypedefForFn(exNames: [\"a\"]) String f14(Map<String, int> a) => \"blah\";",
   ];
 
   final fullFn1 = r"@TypedefForFn() T f1<T>(int v1, T v2) => v2;";
@@ -77,6 +78,11 @@ void main() {
         () => exp_createTypeDef(
             "f13", "typedef fn_f13 = int Function<T>(String c, {T d});",
             exNames: ["a", "b"]));
+    test(
+        "14",
+        () => exp_createTypeDef(
+            "f14", "typedef fn_f14 = String Function();",
+            exNames: ["a"]));
   });
 
   group("getFnDef", () {

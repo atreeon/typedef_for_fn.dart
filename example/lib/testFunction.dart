@@ -43,6 +43,9 @@ int f12(int a, String b) => a + 2;
 @TypedefForFn(exNames: ["a", "b"])
 int f13<T>(int a, Map<int, String> b, String c, {T d}) => a + 2;
 
+@TypedefForFn(exNames: ["a"])
+String f14(Map<String, int> a) => "blah";
+
 
 //obsoleted levels
 // @TypedefForFn(pre: "blah", levels: 1)

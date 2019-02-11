@@ -38,3 +38,6 @@ typedef fn_f12 = int Function();
 
 //f13
 typedef fn_f13 = int Function<T>(String c, {T d});
+
+//f14
+typedef fn_f14 = String Function();

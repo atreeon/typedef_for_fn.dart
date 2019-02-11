@@ -1,5 +1,4 @@
 import 'package:adi_helpers/mapH.dart';
-import 'package:adi_helpers/regexH.dart';
 import 'package:adi_helpers/stringCurriedH.dart';
 import 'package:adi_helpers/stringH.dart';
 
@@ -74,7 +73,7 @@ String rmAnnotations(String fullFn) {
       if (level <= 0) x1.write(char);
     }
   });
-  
+
   var x2 = x1.toString();
   var r = (x2[0] == ")" ? x2.substring(1) : x2).trim();
   return r;
