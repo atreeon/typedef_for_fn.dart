@@ -41,33 +41,33 @@ void main() {
     test(
         "1",
         () => exp_createTypeDef(
-            "f1", "typedef fn_f1 = T Function<T>(int v1, T v2);"));
+            "f1", "typedef fn_f1 = T Function<T>(int v1, T v2,);"));
     test(
         "2",
         () => exp_createTypeDef("f2",
-            "typedef fn_f2 = List<int> Function(int v1, List<int> v2, int v3);"));
+            "typedef fn_f2 = List<int> Function(int v1, List<int> v2, int v3,);"));
     test(
         "3",
         () => exp_createTypeDef(
-            "f3", "typedef fn_f3 = void Function(int input);"));
+            "f3", "typedef fn_f3 = void Function(int input,);"));
     test(
         "4",
         () => exp_createTypeDef(
-            "f4", "typedef fn_f4 = int Function(String input);"));
+            "f4", "typedef fn_f4 = int Function(String input,);"));
     test("5",
         () => exp_createTypeDef("f5", "typedef fn_f5 = String Function();"));
     test(
         "6",
         () => exp_createTypeDef(
-            "f6", "typedef fn_f6 = List<int> Function(fn_a fn, int a);"));
+            "f6", "typedef fn_f6 = List<int> Function(fn_a fn, int a,);"));
     test(
         "8",
         () => exp_createTypeDef(
-            "f8", "typedef fn_f8 = List<int> Function(fn_a fn, int a);"));
+            "f8", "typedef fn_f8 = List<int> Function(fn_a fn, int a,);"));
     test(
         "11",
         () => exp_createTypeDef(
-            "f11", "typedef blah_f11 = int Function(int a);",
+            "f11", "typedef blah_f11 = int Function(int a,);",
             pre: "blah_"));
     test(
         "12",
@@ -80,8 +80,7 @@ void main() {
             exNames: ["a", "b"]));
     test(
         "14",
-        () => exp_createTypeDef(
-            "f14", "typedef fn_f14 = String Function();",
+        () => exp_createTypeDef("f14", "typedef fn_f14 = String Function();",
             exNames: ["a"]));
   });
 

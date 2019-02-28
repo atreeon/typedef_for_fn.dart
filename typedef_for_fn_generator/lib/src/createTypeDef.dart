@@ -1,18 +1,24 @@
 import 'package:adi_helpers/mapH.dart';
 import 'package:adi_helpers/stringCurriedH.dart';
 import 'package:adi_helpers/stringH.dart';
-   
+
 String createTypeDef(String fnName, List<String> codeLines,
     {String pre, List<String> exNames}) {
   if (pre == null) pre = "fn_";
   if (exNames == null) exNames = List<String>();
-      
+
   var x1 = codeLines.where(contains("@TypedefForFn"));
   var x2 = x1.firstWhere(contains(fnName));
   var x3 = getFnDef(x2);
   var x4 = x3.replaceFirst(fnName, "Function");
 
   var y1 = formatFn(x4, exNames);
+
+  if (y1.substring(y1.length - 2) != "()" &&
+      y1.substring(y1.length - 2) != "})") {
+    y1 = y1.replaceFirst(")", ",)");
+  }
+
   var x5 = "typedef $pre$fnName = $y1;";
 
   return x5;
