@@ -47,6 +47,16 @@ int f13<T>(int a, Map<int, String> b, String c, {T d}) => a + 2;
 @TypedefForFn(exNames: ["a"])
 String f14(Map<String, int> a) => "blah";
 
+// // @TypedefForFn()
+// // void f15() {
+// //   AWithAlias();
+// // }
+// mixin ToAlias {}
+
+// class AWithAlias = A with ToAlias;
+
+// class A {}
+
 
 //obsoleted levels
 // @TypedefForFn(pre: "blah", levels: 1)
