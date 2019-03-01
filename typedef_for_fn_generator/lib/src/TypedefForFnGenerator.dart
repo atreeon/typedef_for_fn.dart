@@ -15,9 +15,23 @@ class TypedefForFnGenerator extends GeneratorForAnnotation<TypedefForFn> {
         element.unit.childEntities.map((x) => x.toString()).toList();
 
     //uncomment to get lines of each function
-    for (var entity in element.unit.childEntities) {
-      sb.writeln("//" + entity.toString());
-    }
+    // for (var entity in element.unit.childEntities) {
+    //   sb.writeln("//" + entity.toString());
+    // }
+    // sb.writeln("//" + element.name);
+    // sb.writeln("//" + annotation.toString());
+    // sb.writeln("//" + element.toString());
+    // sb.writeln("//" + element.source.fullName);
+    // sb.writeln("//" + element.displayName);
+    // sb.writeln("//" + element.name);
+    // sb.writeln("//" + element.context.runtimeType.toString());
+    // sb.writeln("//6" + element.context.toString());
+    // sb.writeln("//7" + element.library.toString());
+    // sb.writeln("//8" + element.librarySource.toString());
+    // sb.writeln("//9" + element.source.toString());
+    // sb.writeln("//10" + element.unit.toSource());
+    // if (element.documentationComment != null)
+    //   sb.writeln("//11" + element.documentationComment);
 
     String pre = null;
     if (!annotation.read('pre').isNull)
@@ -33,8 +47,13 @@ class TypedefForFnGenerator extends GeneratorForAnnotation<TypedefForFn> {
     }
 
     sb.writeln("//" + element.displayName);
-    sb.writeln(createTypeDef(element.displayName, childElements,
-        pre: pre, exNames: exNames));
+    sb.writeln(createTypeDef(
+      element.displayName,
+      childElements,
+      element.documentationComment,
+      pre: pre,
+      exNames: exNames,
+    ));
 
     return sb.toString();
   }

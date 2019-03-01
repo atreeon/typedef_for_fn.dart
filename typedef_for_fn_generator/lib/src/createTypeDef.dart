@@ -2,8 +2,13 @@ import 'package:adi_helpers/mapH.dart';
 import 'package:adi_helpers/stringCurriedH.dart';
 import 'package:adi_helpers/stringH.dart';
 
-String createTypeDef(String fnName, List<String> codeLines,
-    {String pre, List<String> exNames}) {
+String createTypeDef(
+  String fnName,
+  List<String> codeLines,
+  String comment, {
+  String pre,
+  List<String> exNames,
+}) {
   if (pre == null) pre = "fn_";
   if (exNames == null) exNames = List<String>();
 
@@ -19,7 +24,8 @@ String createTypeDef(String fnName, List<String> codeLines,
     y1 = y1.replaceFirst(")", ",)");
   }
 
-  var x5 = "typedef $pre$fnName = $y1;";
+  var comment2 = comment == null ? "" : comment + "\n";
+  var x5 = "${comment2}typedef $pre$fnName = $y1;";
 
   return x5;
 }
