@@ -1,25 +1,28 @@
+import 'package:dartz/dartz.dart';
 import "package:test/test.dart";
 import 'package:typedef_for_fn_generator/src/createTypeDef.dart';
 
+import 'createTypeDef_testData.dart';
+
 void main() {
-  final codeLines = [
-    "import 'package:typedef_for_fn/typedef_for_fn.dart';",
-    "@TypedefForFn() T f1<T>(int v1, T v2) => v2;",
-    "@TypedefForFn() List<int> f2(int v1, List<int> v2, int v3) => List();",
-    "@TypedefForFn() void f3(int input) {}",
-    "@TypedefForFn() int f4(String input) => 5;",
-    "@TypedefForFn() String f5() => \"blah\";",
-    "typedef fn_a = List<int> Function(int, List<int>, int)",
-    "@TypedefForFn() List<int> f6(fn_a fn, int a) => fn(5, [1, 2], a);",
-    "@TypedefForFn() List<int> f8(fn_a fn, int a) {fn(5, [1, 2], a);}",
-    // "@TypedefForFn(name: "
-    //     "blah"
-    //     ") int Function(String) f10(fn_f4 fn) => (String s) => 5;",
-    "@TypedefForFn(name: \"blah\") int f11(int a) => a + 2;",
-    "@TypedefForFn(exNames: [\"a\", \"b\"]) int f12(int a, String b) => a + 2;",
-    "@TypedefForFn(exNames: [\"a\", \"b\"]) int f13<T>(int a, Map<int, String> b, String c, {T d}) => a + 2;",
-    "@TypedefForFn(exNames: [\"a\"]) String f14(Map<String, int> a) => \"blah\";",
-  ];
+  // final codeLines = [
+  //   "import 'package:typedef_for_fn/typedef_for_fn.dart';",
+  //   "@TypedefForFn() T f1<T>(int v1, T v2) => v2;",
+  //   "@TypedefForFn() List<int> f2(int v1, List<int> v2, int v3) => List();",
+  //   "@TypedefForFn() void f3(int input) {}",
+  //   "@TypedefForFn() int f4(String input) => 5;",
+  //   "@TypedefForFn() String f5() => \"blah\";",
+  //   "typedef fn_a = List<int> Function(int, List<int>, int)",
+  //   "@TypedefForFn() List<int> f6(fn_a fn, int a) => fn(5, [1, 2], a);",
+  //   "@TypedefForFn() List<int> f8(fn_a fn, int a) {fn(5, [1, 2], a);}",
+  //   // "@TypedefForFn(name: "
+  //   //     "blah"
+  //   //     ") int Function(String) f10(fn_f4 fn) => (String s) => 5;",
+  //   "@TypedefForFn(name: \"blah\") int f11(int a) => a + 2;",
+  //   "@TypedefForFn(exNames: [\"a\", \"b\"]) int f12(int a, String b) => a + 2;",
+  //   "@TypedefForFn(exNames: [\"a\", \"b\"]) int f13<T>(int a, Map<int, String> b, String c, {T d}) => a + 2;",
+  //   "@TypedefForFn(exNames: [\"a\"]) String f14(Map<String, int> a) => \"blah\";",
+  // ];
 
   final fullFn1 = r"@TypedefForFn() T f1<T>(int v1, T v2) => v2;";
   final fullFn2 =
@@ -34,14 +37,15 @@ void main() {
   group("createTypeDef", () {
     void exp_createTypeDef(String fnName, String expected,
         {String pre, List<String> exNames}) {
-      var result = createTypeDef(fnName, codeLines, pre: pre, exNames: exNames);
+      var result = createTypeDef(fnName, testCodeLinesInput, null,
+          pre: pre, exNames: exNames);
       expect(result, expected);
     }
 
     test(
         "1",
         () => exp_createTypeDef(
-            "f1", "typedef fn_f1 = T Function<T>(int v1, T v2,);"));
+            "f1", "typedef fn_f1 = T Function<T>( int v1, T v2, );"));
     test(
         "2",
         () => exp_createTypeDef("f2",
@@ -84,54 +88,134 @@ void main() {
             exNames: ["a"]));
   });
 
-  group("getFnDef", () {
-    void exp_getFnDef(String fullFn, String expected) {
-      var result = getFnDef(fullFn);
+  group("addCommaToEndOfParameters", () {
+    void eAddCommaToEndOfParameters(String line, String expected) {
+      var result = addCommaToEndOfParameters(line);
       expect(result, expected);
     }
 
-    var fullFn11 = "@TypedefForFn(name: " "blah" ") int f11(int a) => a + 2;";
-    var fnDef11 = "int f11(int a)";
+    test(
+        "1",
+        () => eAddCommaToEndOfParameters(
+              "fn_f1 = T Function<T>(int v1, T v2,)",
+              "fn_f1 = T Function<T>(int v1, T v2,)",
+            ));
 
-    test("1", () => exp_getFnDef(fullFn1, fnDef1));
-    test("2", () => exp_getFnDef(fullFn2, fnDef2));
-    test("3", () => exp_getFnDef(fullFn3, fnDef3));
-    test("11", () => exp_getFnDef(fullFn11, fnDef11));
     test(
-        "13",
-        () => exp_getFnDef(
-            "@TypedefForFn(exNames: [\"a\", \"b\"]) int f13<T>(int a, Map<int, String> b, String c, {T d}) => a + 2;",
-            "int f13<T>(int a, Map<int, String> b, String c, {T d})"));
-    test(
-        "a",
-        () => exp_getFnDef(
-            "@meta1() @meta2() int fa({a}) => a + 2;", "int fa({a})"));
+        "2",
+        () => eAddCommaToEndOfParameters(
+            "List<int> f2(int v1, List<int> v2, int v3)",
+            "List<int> f2(int v1, List<int> v2, int v3,)"));
   });
 
-  group("formatFn", () {
-    void exp_formatFn(String fn, List<String> exNames, String expected) {
-      var result = formatFn(fn, exNames);
+  group("getFnSignatureFromCodeLine", () {
+    void eGetFnSignatureFromCodeLine(String line, String expected) {
+      var result = getFnSignatureFromCodeLine(line);
+      expect(result, expected);
+    }
+
+    test(
+        "1",
+        () => eGetFnSignatureFromCodeLine(
+              "@TypedefForFn() T f1<T>( int v1, T v2, ) { return v2; }",
+              "T f1<T>( int v1, T v2, )",
+            ));
+  });
+
+  group("getFunctionSignature", () {
+    void eGetFunctionSignature(String fnName, String expected) {
+      var result = getFunctionSignature(testCodeLinesInput, fnName);
+      expect(result, expected);
+    }
+
+    test("1", () => eGetFunctionSignature("f1", "T f1<T>( int v1, T v2, )"));
+    test(
+        "2",
+        () => eGetFunctionSignature(
+            "f2", "List<int> f2(int v1, List<int> v2, int v3)"));
+    test("3", () => eGetFunctionSignature("f3", "void f3(int input)"));
+    test("4", () => eGetFunctionSignature("f4", "int f4(String input)"));
+    test("5", () => eGetFunctionSignature("f5", "String f5()"));
+    test(
+        "6", () => eGetFunctionSignature("f6", "List<int> f6(fn_a fn, int a)"));
+    test(
+        "8", () => eGetFunctionSignature("f8", "List<int> f8(fn_a fn, int a)"));
+    test("9", () => eGetFunctionSignature("f9", "int f9(fn_f4 fn, int a)"));
+    test("11", () => eGetFunctionSignature("f11", "int f11(int a)"));
+    test("12", () => eGetFunctionSignature("f12", "int f12(int a, String b)"));
+    test(
+        "13",
+        () => eGetFunctionSignature(
+            "f13", "int f13<T>(int a, Map<int, String> b, String c, {T d})"));
+    test("14",
+        () => eGetFunctionSignature("f14", "String f14(Map<String, int> a)"));
+    test("15", () => eGetFunctionSignature("f15", "void f15()"));
+  });
+
+  group("isLambda", () {
+    void eIsLambda(String codeLine, Option<bool> expected) {
+      var result = isLambda(codeLine);
+      expect(result, expected);
+    }
+
+    test("1 lambda", () {
+      eIsLambda(
+          "List<int> f2(int v1, List<int> v2, int v3) => List().where((x) => x > 5).toList();",
+          some(true));
+    });
+
+    test("2 not a real function", () {
+      eIsLambda(
+          "List<int> f2(int v1, List<int> v2, int v3) sdlkfj lskdj not a real function definition;",
+          none());
+    });
+
+    test("3 just brackets", () {
+      eIsLambda("List<int> f8(fn_a fn, int a) { return fn(5, [1, 2], a);",
+          some(false));
+    });
+
+    test("4 internal lambda", () {
+      eIsLambda(
+          "List<int> f8(fn_a fn, int a) { () => return x));", some(false));
+    });
+
+    test("5 internal function ", () {
+      eIsLambda("List<int> f8(fn_a fn, int a) => return {blah};", some(true));
+    });
+
+    test("5 internal function ", () {
+      eIsLambda(
+          "int f13<T>(int a, Map<int, String> b, String c, {T d}) => a + 2;",
+          some(true));
+    });
+  });
+
+  group("rmParamsFromFnSignature", () {
+    void eRmParamsFromFnSignature(
+        String fn, List<String> exNames, String expected) {
+      var result = rmParamsFromFnSignature(fn, exNames);
       expect(result, expected);
     }
 
     test("1", () {
-      exp_formatFn(
+      eRmParamsFromFnSignature(
           "int Function(int a, String b)", [], "int Function(int a, String b)");
     });
     test("2", () {
-      exp_formatFn(
+      eRmParamsFromFnSignature(
           "int Function(int a, String b)", ["b"], "int Function(int a)");
     });
     test("3", () {
-      exp_formatFn(
+      eRmParamsFromFnSignature(
           "int Function(String a, List<String> b, {String c, List<String> d})",
           ["a"],
           "int Function(List<String> b, {String c, List<String> d})");
     });
 
     test("4", () {
-      exp_formatFn("int Function(Map<int, String> a, String b)", ["b"],
-          "int Function(Map<int, String> a)");
+      eRmParamsFromFnSignature("int Function(Map<int, String> a, String b)",
+          ["b"], "int Function(Map<int, String> a)");
     });
   });
 
@@ -166,6 +250,30 @@ void main() {
 }
 
 //Obsolete, old code
+
+// group("getFnDef", () {
+//   void exp_getFnDef(String fullFn, String expected) {
+//     var result = getFnDef(fullFn);
+//     expect(result, expected);
+//   }
+
+//   var fullFn11 = "@TypedefForFn(name: " "blah" ") int f11(int a) => a + 2;";
+//   var fnDef11 = "int f11(int a)";
+
+//   test("1", () => exp_getFnDef(fullFn1, fnDef1));
+//   test("2", () => exp_getFnDef(fullFn2, fnDef2));
+//   test("3", () => exp_getFnDef(fullFn3, fnDef3));
+//   test("11", () => exp_getFnDef(fullFn11, fnDef11));
+//   test(
+//       "13",
+//       () => exp_getFnDef(
+//           "@TypedefForFn(exNames: [\"a\", \"b\"]) int f13<T>(int a, Map<int, String> b, String c, {T d}) => a + 2;",
+//           "int f13<T>(int a, Map<int, String> b, String c, {T d})"));
+//   test(
+//       "a",
+//       () => exp_getFnDef(
+//           "@meta1() @meta2() int fa({a}) => a + 2;", "int fa({a})"));
+// });
 
 // group("annotExists", () {
 //   void exp_annotExists(String fnDef, bool expected) =>

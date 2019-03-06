@@ -13,7 +13,8 @@ dependencies:
   typedef_for_fn:    
     path: ../typedef_for_fn/  
   quiver: ^2.0.1 
-  adi_helpers: 
+  dartz: ^0.8.3 
+  adi_helpers:   
     # git: git@bitbucket.org/twistedinferno/adi_helpers.git
     path: ../../adi_helpers/
       

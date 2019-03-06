@@ -1,4 +1,5 @@
-import 'package:example/A.dart';
+var testCodeLinesInput = """
+  //import 'package:example/A.dart';
 import 'package:typedef_for_fn/typedef_for_fn.dart';
 part 'testFunction.g.dart';
 
@@ -10,7 +11,7 @@ T f1<T>(
 ) {
   return v2;
 }
- 
+
 @TypedefForFn()
 List<int> f2(int v1, List<int> v2, int v3) =>
     List().where((x) => x > 5).toList();
@@ -59,6 +60,7 @@ void f15() {
   AWithAlias();
 }
 
-//obsoleted levels
-// @TypedefForFn(pre: "blah", levels: 1)
-// int Function(String) f10(fn_f4 fn) => (String s) => 5;
+obsoleted levels
+@TypedefForFn(pre: "blah", levels: 1)
+int Function(String) f10(fn_f4 fn) => (String s) => 5;
+  """;
