@@ -86,9 +86,6 @@ class TypedefForFnGenerator extends GeneratorForAnnotation<TypedefForFn> {
     // var childElements =
     //     element.unit.childEntities.map((x) => x.toString()).toList();
 
-    // var childElements =
-    //     element.unit.childEntities.map((x) => x.toString()).toList();
-
     // //uncomment to get lines of each function
     // // for (var entity in element.unit.childEntities) {
     // //   sb.writeln("//" + entity.toString());
@@ -141,19 +138,50 @@ class TypedefForFnGenerator extends GeneratorForAnnotation<TypedefForFn> {
     // //     element.unit.childEntities.map((x) => x.toString()).toList();
 
     // sb.writeln("//" + element.displayName);
-    sb.writeln(createTypeDef(
-      element.displayName,
-      element.session
-          .getParsedLibraryByElement(element.library)
-          .units
-          .first
-          .content
-          .toString(),
-      element.documentationComment,
-      pre: pre,
-      exNames: exNames,
-    ));
-    return sb.toString();
+
+    // sb.writeln("//" +
+    //     element.session
+    //         .getResolvedLibraryByElement(element.library).
+    //         .toString());
+
+    return element.session
+        .getResolvedLibraryByElement(element.library)
+        .then((resolvedLibrary) {
+      var declaration = resolvedLibrary.getElementDeclaration(element);
+      var unit = declaration.resolvedUnit.unit;
+
+      sb.writeln(createTypeDef(
+        element.displayName,
+        unit.toString(),
+        element.documentationComment,
+        pre: pre,
+        exNames: exNames,
+      ));
+
+      return sb.toString();
+    });
+
+    // sb.writeln("//" +
+    //     element.session
+    //         .getParsedLibraryByElement(element.library)
+    //         .units
+    //         .first
+    //         .content
+    //         .toString());
+
+    // sb.writeln(createTypeDef(
+    //   element.displayName,
+    //   element.session
+    //       .getParsedLibraryByElement(element.library)
+    //       .units
+    //       .first
+    //       .content
+    //       .toString(),
+    //   element.documentationComment,
+    //   pre: pre,
+    //   exNames: exNames,
+    // ));
+    // return sb.toString();
   }
 }
 

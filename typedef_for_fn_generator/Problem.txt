@@ -1,0 +1,20 @@
+Not compatible with built_value_generator
+
+built_value_generator 
+    v6.3.1 uses analyzer 
+
+Need analyzer_plugin to upgrade to 35.3 of analyzer
+    then built_value_generator to update to latest version of analyzer_plugin
+
+
+
+
+What version of analyzer_plugin does built_value use - <35.0
+
+Can I drop down a level of my typedef_for_fn
+
+It is build that uses 35.3 or whatever...I need to drop down a level of build
+
+
+
+

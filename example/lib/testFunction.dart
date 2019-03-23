@@ -41,7 +41,7 @@ List<int> f8(fn_a fn, int a) {
 int f9(fn_f4 fn, int a) {
   return fn("blah") + 2;
 }
-
+ 
 @TypedefForFn(pre: "blah")
 int f11(int a) => a + 2;
 
