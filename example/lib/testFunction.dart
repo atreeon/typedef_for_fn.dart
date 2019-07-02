@@ -10,7 +10,7 @@ T f1<T>(
 ) {
   return v2;
 }
- 
+
 @TypedefForFn()
 List<int> f2(int v1, List<int> v2, int v3) =>
     List().where((x) => x > 5).toList();
@@ -41,7 +41,7 @@ List<int> f8(fn_a fn, int a) {
 int f9(fn_f4 fn, int a) {
   return fn("blah") + 2;
 }
- 
+
 @TypedefForFn(pre: "blah")
 int f11(int a) => a + 2;
 
@@ -57,6 +57,14 @@ String f14(Map<String, int> a) => "blah";
 @TypedefForFn()
 void f15() {
   AWithAlias();
+}
+
+@TypedefForFn(exNames: ["a", "b"])
+Future<int> f16<T>(int a, Map<int, String> b, String c, {T d}) async => a + 2;
+
+@TypedefForFn(exNames: ["a", "b"])
+Future<int> f17<T>(int a, Map<int, String> b, String c, {T d}) async {
+  return a + 2;
 }
 
 //obsoleted levels

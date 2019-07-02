@@ -60,6 +60,14 @@ void f15() {
   AWithAlias();
 }
 
+@TypedefForFn(exNames: ["a", "b"])
+Future<int> f16<T>(int a, Map<int, String> b, String c, {T d}) async => a + 2;
+
+@TypedefForFn(exNames: ["a", "b"])
+Future<int> f17<T>(int a, Map<int, String> b, String c, {T d}) async { 
+  return a + 2;
+}
+
 obsoleted levels
 @TypedefForFn(pre: "blah", levels: 1)
 int Function(String) f10(fn_f4 fn) => (String s) => 5;

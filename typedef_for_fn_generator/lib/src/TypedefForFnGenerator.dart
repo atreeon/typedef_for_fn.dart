@@ -4,7 +4,6 @@ import 'package:analyzer/dart/element/element.dart';
 import 'package:build/src/builder/build_step.dart';
 import 'package:source_gen/source_gen.dart';
 import 'package:typedef_for_fn/typedef_for_fn.dart';
-import 'package:typedef_for_fn_generator/src/ElementForTypeDef.dart';
 import 'package:typedef_for_fn_generator/src/createTypeDef.dart';
 
 class TypedefForFnGenerator extends GeneratorForAnnotation<TypedefForFn> {

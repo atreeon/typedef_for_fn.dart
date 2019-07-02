@@ -28,7 +28,7 @@ String createTypeDef(
 }
 
 ///Receives all the code lines, finds the function
-/// by the function name passed in 
+/// by the function name passed in
 /// then returns the found function signature
 String getFunctionSignature(String codeLines, String fnName) {
   var x1 = codeLines.split("@TypedefForFn");
@@ -57,7 +57,7 @@ String rmParamsFromFnSignature(String fn, List<String> exNames) {
   //remove any that need removing
   params.removeWhere((x, _) => exNames.contains(x));
 
-  var x1 = getInBracketsRight(fn).getOrElse(() {});
+  var x1 = getInBracketsRight(fn, BracketType.parenthesis).getOrElse(() {});
   var y1 = fn.replaceFirst(x1, "¬`");
   var x2 = map(params, (k, v) => "$v $k").join(", ");
   var r = y1.replaceFirst("¬`", "($x2)");
@@ -70,7 +70,7 @@ String rmParamsFromFnSignature(String fn, List<String> exNames) {
 ///out: {"a": "int", "b": "String"}
 Map<String, String> getParameters(String fn) {
   //take everything inside the parenthesis
-  var x1 = getInBracketsRight(fn).getOrElse(() {});
+  var x1 = getInBracketsRight(fn, BracketType.parenthesis).getOrElse(() {});
   var x2 = x1.substring(1, x1.length - 1);
 
   if (x2.length == 0) return {};
@@ -104,6 +104,8 @@ String addCommaToEndOfParameters(String fn) {
 
 ///Takes a codeLine and gets just the function signature
 String getFnSignatureFromCodeLine(String line) {
+  line = line.replaceAll("async", "");
+
   var isLamdaResult =
       isLambda(line).getOrElse(() => throw NoLamdaOrBracketFoundException());
 
@@ -115,8 +117,11 @@ String getFnSignatureFromCodeLine(String line) {
         .substring(bracketPositionOfAnnotation.end + 1, line.indexOf("=>"))
         .trim();
 
+  var bracketPosBody =
+      bracketPositionRight(line, BracketType.curly).getOrElse(() {});
+
   return line
-      .substring(bracketPositionOfAnnotation.end + 1, line.indexOf("{"))
+      .substring(bracketPositionOfAnnotation.end + 1, bracketPosBody.start - 1)
       .trim();
 }
 

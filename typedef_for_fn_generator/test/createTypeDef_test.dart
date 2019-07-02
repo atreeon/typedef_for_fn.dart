@@ -3,6 +3,7 @@ import "package:test/test.dart";
 import 'package:typedef_for_fn_generator/src/createTypeDef.dart';
 
 import 'createTypeDef_testData.dart';
+import 'createTypeDef_testData2.dart';
 
 void main() {
   // final codeLines = [
@@ -29,6 +30,8 @@ void main() {
       r"@TypedefForFn() List<int> f2(int v1, List<int> v2, int v3) => List()";
   final fullFn3 =
       "@TypedefForFn() List<int> f8(fn_a fn, int a) {fn(5, [1, 2], a);}";
+  final fullFn4 =
+      "@TypedefForFn() List<int> f8(fn_a fn, int a) async {fn(5, [1, 2], a);}";
 
   final fnDef1 = r"T f1<T>(int v1, T v2)";
   final fnDef2 = r"List<int> f2(int v1, List<int> v2, int v3)";
@@ -82,10 +85,30 @@ void main() {
         () => exp_createTypeDef(
             "f13", "typedef fn_f13 = int Function<T>(String c, {T d});",
             exNames: ["a", "b"]));
+
     test(
         "14",
         () => exp_createTypeDef("f14", "typedef fn_f14 = String Function();",
             exNames: ["a"]));
+
+    test(
+        "16",
+        () => exp_createTypeDef(
+            "f16", "typedef fn_f16 = Future<int> Function<T>(String c, {T d});",
+            exNames: ["a", "b"]));
+
+    test(
+        "17",
+        () => exp_createTypeDef(
+            "f17", "typedef fn_f17 = Future<int> Function<T>(String c, {T d});",
+            exNames: ["a", "b"]));
+
+    test("getFirebaseData", () {
+      var result = createTypeDef("getFirebaseData", testCodeLinesInput2, null,
+          exNames: ["firebaseDb"]);
+      expect(
+          result, "typedef fn_getFirebaseData = Future<int> Function<T>(String uid, String collectionType, bool isStaticData);");
+    });
   });
 
   group("addCommaToEndOfParameters", () {
@@ -119,6 +142,24 @@ void main() {
         () => eGetFnSignatureFromCodeLine(
               "@TypedefForFn() T f1<T>( int v1, T v2, ) { return v2; }",
               "T f1<T>( int v1, T v2, )",
+            ));
+
+    test(
+        "2",
+        () => eGetFnSignatureFromCodeLine(
+              "@TypedefForFn(exNames: [\"a\", \"b\"]) Future<int> f16<T>(int a, Map<int, String> b, String c, {T d}) async => a + 2;",
+              "Future<int> f16<T>(int a, Map<int, String> b, String c, {T d})",
+            ));
+
+    test(
+        "3",
+        () => eGetFnSignatureFromCodeLine(
+              """
+              @TypedefForFn(exNames: ["a", "b"])
+Future<int> f17<T>(int a, Map<int, String> b, String c, {T d}) async { 
+  return a + 2;
+}""",
+              "Future<int> f17<T>(int a, Map<int, String> b, String c, {T d})",
             ));
   });
 
