@@ -12,8 +12,7 @@ T f1<T>(
 }
 
 @TypedefForFn()
-List<int> f2(int v1, List<int> v2, int v3) =>
-    List().where((x) => x > 5).toList();
+List<int> f2(int v1, List<int> v2, int v3) => v2.where((x) => x > 5).toList();
 
 @TypedefForFn()
 void f3(int input) {}

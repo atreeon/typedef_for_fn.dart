@@ -54,3 +54,7 @@ typedef fn_f13 = int Function<T>(String c, {T d});
 typedef fn_f14 = String Function();
 
 typedef fn_f15 = void Function();
+
+typedef fn_f16 = Future<int> Function<T>(String c, {T d});
+
+typedef fn_f17 = Future<int> Function<T>(String c, {T d});

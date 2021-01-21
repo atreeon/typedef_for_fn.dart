@@ -1,6 +1,6 @@
-import 'package:adi_helpers/mapH.dart';
-import 'package:adi_helpers/stringH.dart';
 import 'package:dartz/dartz.dart';
+import 'package:typedef_for_fn_generator/src/helpers/mapH.dart';
+import 'package:typedef_for_fn_generator/src/helpers/stringH.dart';
 
 ///To be executed in generator.
 ///Produces a list of function defintions where
@@ -12,8 +12,10 @@ String createTypeDef(
   String pre,
   List<String> exNames,
 }) {
-  if (pre == null) pre = "fn_";
-  if (exNames == null) exNames = List<String>();
+  if (pre == null) //
+    pre = "fn_";
+  if (exNames == null) //
+    exNames = [];
 
   var x3 = getFunctionSignature(codeLines, fnName);
   var x4 = x3.replaceFirst(fnName, "Function");
@@ -35,13 +37,9 @@ String getFunctionSignature(String codeLines, String fnName) {
   var x2 = x1.skip(1);
   var x3 = x2.map((x) => x.replaceAll("(\n", "("));
   var x4 = x3.map((x) => x.replaceAll("\n", " "));
-  var x5 = x4
-      .map((x) => x.replaceAll("  ", " "))
-      .map((x) => x.replaceAll("  ", " "))
-      .map((x) => x.replaceAll("  ", " "));
+  var x5 = x4.map((x) => x.replaceAll("  ", " ")).map((x) => x.replaceAll("  ", " ")).map((x) => x.replaceAll("  ", " "));
   var x6 = x5.map(getFnSignatureFromCodeLine);
-  var r = x6.firstWhere((x) => x.indexOf(fnName) >= 0,
-      orElse: () => throw FunctionDefinitionNotFoundException());
+  var r = x6.firstWhere((x) => x.indexOf(fnName) >= 0, orElse: () => throw FunctionDefinitionNotFoundException());
 
   return r;
 }
@@ -84,8 +82,7 @@ Map<String, String> getParameters(String fn) {
 
   //turn into a map
   var z3 = z2.map((x) => splitByLastOf(x, " ")).toList();
-  var r = Map<String, String>.fromIterables(
-      z3.map((x) => x[1].trim()), z3.map((x) => x[0].trim()));
+  var r = Map<String, String>.fromIterables(z3.map((x) => x[1].trim()), z3.map((x) => x[0].trim()));
 
   return r;
 }
@@ -93,10 +90,7 @@ Map<String, String> getParameters(String fn) {
 ///Takes a function signature and adds a comma to the last
 /// parameter in the list of parameters
 String addCommaToEndOfParameters(String fn) {
-  if (fn.substring(fn.length - 2) != "()" &&
-      fn.substring(fn.length - 2) != "})" &&
-      fn.substring(fn.length - 2) != ",)" &&
-      fn.substring(fn.length - 3) != ", )") {
+  if (fn.substring(fn.length - 2) != "()" && fn.substring(fn.length - 2) != "})" && fn.substring(fn.length - 2) != ",)" && fn.substring(fn.length - 3) != ", )") {
     return fn.substring(0, fn.length - 1) + ",)";
   }
   return fn;
@@ -106,32 +100,22 @@ String addCommaToEndOfParameters(String fn) {
 String getFnSignatureFromCodeLine(String line) {
   line = line.replaceAll("async", "");
 
-  var isLamdaResult =
-      isLambda(line).getOrElse(() => throw NoLamdaOrBracketFoundException());
+  var isLamdaResult = isLambda(line).getOrElse(() => throw NoLamdaOrBracketFoundException());
 
-  var bracketPositionOfAnnotation =
-      bracketPositionLeft(line, BracketType.parenthesis).getOrElse(() {});
+  var bracketPositionOfAnnotation = bracketPositionLeft(line, BracketType.parenthesis).getOrElse(() {});
 
-  if (isLamdaResult)
-    return line
-        .substring(bracketPositionOfAnnotation.end + 1, line.indexOf("=>"))
-        .trim();
+  if (isLamdaResult) return line.substring(bracketPositionOfAnnotation.end + 1, line.indexOf("=>")).trim();
 
-  var bracketPosBody =
-      bracketPositionRight(line, BracketType.curly).getOrElse(() {});
+  var bracketPosBody = bracketPositionRight(line, BracketType.curly).getOrElse(() {});
 
-  return line
-      .substring(bracketPositionOfAnnotation.end + 1, bracketPosBody.start - 1)
-      .trim();
+  return line.substring(bracketPositionOfAnnotation.end + 1, bracketPosBody.start - 1).trim();
 }
 
 ///Takes a codeline and determines whether it is a lambda function
 /// or a curly bracket function
 Option<bool> isLambda(String codeLine) {
-  var bracketPosition =
-      findOutsideOfBrackets(BracketType.parenthesis, codeLine, "{");
-  var firstLambda =
-      findOutsideOfBrackets(BracketType.parenthesis, codeLine, "=>");
+  var bracketPosition = findOutsideOfBrackets(BracketType.parenthesis, codeLine, "{");
+  var firstLambda = findOutsideOfBrackets(BracketType.parenthesis, codeLine, "=>");
 
   if (bracketPosition.length == 0 && firstLambda.length == 0) return none();
 

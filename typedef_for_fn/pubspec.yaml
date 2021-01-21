@@ -1,11 +1,11 @@
 name: typedef_for_fn
 description: Creates a named typedef for each function with the annotation
 version: 1.0.0
-author: Adrian
+homepage: https://github.com/atreeon/typedef_for_fn
 # homepage: https://github.com/...
  
 environment:  
-  sdk: ">=2.0.0 <3.0.0" 
+  sdk: ">=2.7.0 <3.0.0"
 
 dependencies: 
 
