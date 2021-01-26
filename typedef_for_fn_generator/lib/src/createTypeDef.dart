@@ -9,13 +9,11 @@ String createTypeDef(
   String fnName,
   String codeLines,
   String comment, {
-  String pre,
-  List<String> exNames,
+  String preInput,
+  List<String> exNamesInput,
 }) {
-  if (pre == null) //
-    pre = "fn_";
-  if (exNames == null) //
-    exNames = [];
+  String pre = preInput == null ? "fn_" : preInput;
+  List<String> exNames = exNamesInput == null ? [] : exNamesInput;
 
   var x3 = getFunctionSignature(codeLines, fnName);
   var x4 = x3.replaceFirst(fnName, "Function");
@@ -55,7 +53,7 @@ String rmParamsFromFnSignature(String fn, List<String> exNames) {
   //remove any that need removing
   params.removeWhere((x, _) => exNames.contains(x));
 
-  var x1 = getInBracketsRight(fn, BracketType.parenthesis).getOrElse(() {});
+  String x1 = getInBracketsRight(fn, BracketType.parenthesis).getOrElse(() => null);
   var y1 = fn.replaceFirst(x1, "¬`");
   var x2 = map(params, (k, v) => "$v $k").join(", ");
   var r = y1.replaceFirst("¬`", "($x2)");
@@ -68,7 +66,7 @@ String rmParamsFromFnSignature(String fn, List<String> exNames) {
 ///out: {"a": "int", "b": "String"}
 Map<String, String> getParameters(String fn) {
   //take everything inside the parenthesis
-  var x1 = getInBracketsRight(fn, BracketType.parenthesis).getOrElse(() {});
+  var x1 = getInBracketsRight(fn, BracketType.parenthesis).getOrElse(() => null);
   var x2 = x1.substring(1, x1.length - 1);
 
   if (x2.length == 0) return {};
@@ -102,11 +100,11 @@ String getFnSignatureFromCodeLine(String line) {
 
   var isLamdaResult = isLambda(line).getOrElse(() => throw NoLamdaOrBracketFoundException());
 
-  var bracketPositionOfAnnotation = bracketPositionLeft(line, BracketType.parenthesis).getOrElse(() {});
+  var bracketPositionOfAnnotation = bracketPositionLeft(line, BracketType.parenthesis).getOrElse(() => null);
 
   if (isLamdaResult) return line.substring(bracketPositionOfAnnotation.end + 1, line.indexOf("=>")).trim();
 
-  var bracketPosBody = bracketPositionRight(line, BracketType.curly).getOrElse(() {});
+  var bracketPosBody = bracketPositionRight(line, BracketType.curly).getOrElse(() => null);
 
   return line.substring(bracketPositionOfAnnotation.end + 1, bracketPosBody.start - 1).trim();
 }

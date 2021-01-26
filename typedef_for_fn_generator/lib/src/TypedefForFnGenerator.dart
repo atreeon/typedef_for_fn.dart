@@ -8,8 +8,7 @@ import 'package:typedef_for_fn_generator/src/createTypeDef.dart';
 
 class TypedefForFnGenerator extends GeneratorForAnnotation<TypedefForFn> {
   @override
-  FutureOr<String> generateForAnnotatedElement(
-      Element element, ConstantReader annotation, BuildStep buildStep) {
+  FutureOr<String> generateForAnnotatedElement(Element element, ConstantReader annotation, BuildStep buildStep) {
     var sb = StringBuffer();
     // sb.writeln("_${element.displayName}(){");
 
@@ -105,16 +104,11 @@ class TypedefForFnGenerator extends GeneratorForAnnotation<TypedefForFn> {
     // //   sb.writeln("//11" + element.documentationComment);
 
     String pre = null;
-    if (!annotation.read('pre').isNull)
-      pre = annotation.read('pre').stringValue;
+    if (!annotation.read('pre').isNull) pre = annotation.read('pre').stringValue;
 
     List<String> exNames = null;
     if (!annotation.read('exNames').isNull) {
-      exNames = annotation
-          .read('exNames')
-          .listValue
-          .map((x) => x.toStringValue())
-          .toList();
+      exNames = annotation.read('exNames').listValue.map((x) => x.toStringValue()).toList();
     }
 
     //   sb.writeln("//" +
@@ -143,9 +137,7 @@ class TypedefForFnGenerator extends GeneratorForAnnotation<TypedefForFn> {
     //         .getResolvedLibraryByElement(element.library).
     //         .toString());
 
-    return element.session
-        .getResolvedLibraryByElement(element.library)
-        .then((resolvedLibrary) {
+    return element.session.getResolvedLibraryByElement(element.library).then((resolvedLibrary) {
       var declaration = resolvedLibrary.getElementDeclaration(element);
       var unit = declaration.resolvedUnit.unit;
 
@@ -153,8 +145,8 @@ class TypedefForFnGenerator extends GeneratorForAnnotation<TypedefForFn> {
         element.displayName,
         unit.toString(),
         element.documentationComment,
-        pre: pre,
-        exNames: exNames,
+        preInput: pre,
+        exNamesInput: exNames,
       ));
 
       return sb.toString();

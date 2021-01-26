@@ -17,8 +17,7 @@ String createSpaces(int number) {
 ///inp: bl(blim) (plumpy(stumpy))
 ///out: (plumpy(stumpy))
 Option<String> getInBracketsRight(String input, BracketType bracketType) {
-  return bracketPositionRight(input, bracketType)
-      .bind((x) => some(input.substring(x.start - 1, x.end + 1)));
+  return bracketPositionRight(input, bracketType).bind((x) => some(input.substring(x.start - 1, x.end + 1)));
 }
 
 ///Gets the first full word from the beginning of the text
@@ -78,8 +77,7 @@ Option<StrPos> bracketPositionLeft(String source, BracketType bracketType) {
 ///Gets the starting positions of the pattern inside brackets
 ///inp: aaa,aaaa<aa,a,>aa,a |
 ///out: [3,17]
-List<int> findOutsideOfBrackets(
-    BracketType bracketType, String source, String pattern) {
+List<int> findOutsideOfBrackets(BracketType bracketType, String source, String pattern) {
   var bracket = getBracket(bracketType);
 
   var level = 0;
@@ -117,18 +115,16 @@ final bracketData = [
 ];
 
 ///Gets the related bracket data line for the bracket type
-Bracket getBracket(BracketType bracketType) =>
-    bracketData.firstWhere((x) => x.bracketType == bracketType);
+Bracket getBracket(BracketType bracketType) => bracketData.firstWhere((x) => x.bracketType == bracketType);
 
 ///Splits a string at the indices passed in
 List<String> splitByIndices(String source, List<int> positions) {
   if (positions.length == 0) return [source];
 
   if (positions[0] != 0) positions.insert(0, 0);
-  if (positions[positions.length - 1] != source.length)
-    positions.insert(positions.length, source.length);
+  if (positions[positions.length - 1] != source.length) positions.insert(positions.length, source.length);
 
-  var x1 = List<String>();
+  var x1 = <String>[];
   for (var i = 0; i < positions.length - 1; i++) {
     x1.add(source.substring(positions[i], positions[i + 1]));
   }
@@ -163,7 +159,7 @@ class StrPos {
 ///Trim any spaces from end and beginning of word
 ///[,.;@#?!&$]
 String removePunctuation(String input) {
-  var removedChars = input.replaceAll( RegExp(r"[,.;@#?!&$'-/()]"), ' ');
+  var removedChars = input.replaceAll(RegExp(r"[,.;@#?!&$'-/()]"), ' ');
 //  var removedChars = input.replaceAll(r'h+', "XXX");
 //  var removedDoubleSpaces = removedChars.replaceAll(RegExp(r"  +"), "z");
   var removedDoubleSpaces = removedChars.replaceAll("  ", " ");
