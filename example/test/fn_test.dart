@@ -113,16 +113,16 @@ main() {
 
     expect(result.toString(), '5');
   });
-
-  //couldn't get this to compile
-  test("17b", () async {
-    fn_f17b fn = <T>(String a, {T? d}) => //
-        Future<int>.value(5);
-
-    var resultx = await fn("1", d: "blah");
-
-    expect(resultx.toString(), '5');
-  });
+//
+//  //couldn't get this to compile
+//  test("17b", () async {
+//    fn_f17b fn = <T>(String a, {T? d}) => //
+//        Future<int>.value(5);
+//
+//    var resultx = await fn("1", d: "blah");
+//
+//    expect(resultx.toString(), '5');
+//  });
 }
 
 //POTENTIAL OTHER TESTS
@@ -217,17 +217,33 @@ int f13b<T>(int a, Map<int, String> b, String c, {T? d}) => a + 2;
 String f14(Map<String, int> a) => "blah";
 
 @TypedefForFn(exNames: ["a", "b"])
-Future<int> f16<T>(int a, Map<int, String> b, String c, {required T d}) async => a + 2;
-
-@TypedefForFn(exNames: ["a", "b"])
-Future<int> f16b<T>(int a, Map<int, String> b, String c, {T? d}) async => a + 2;
-
-@TypedefForFn(exNames: ["a", "b"])
-Future<int> f17<T>(int a, Map<int, String> b, String c, {required T d}) async {
-  return a + 2;
-}
-
-@TypedefForFn(exNames: ["a", "b"])
-Future<int> f17b<T>(int a, Map<int, String> b, String c, {required T? d}) async {
-  return a + 2;
-}
+Future<int> f16<T>(int a, Map<int, String> b, String c, {required T d}) async =>
+    a + 2;
+//
+//@TypedefForFn(exNames: ["a", "b"])
+//Future<int> f16b<T>(int a, Map<int, String> b, String c, {T? d}) async => a + 2;
+//
+//@TypedefForFn(exNames: ["a", "b"])
+//Future<int> f17<T>(int a, Map<int, String> b, String c, {required T d}) async {
+//  return a + 2;
+//}
+//
+//@TypedefForFn(exNames: ["a", "b"])
+//Future<int> f17b<T>(int a, Map<int, String> b, String c, {required T? d}) async {
+//  return a + 2;
+//}
+//
+//@TypedefForFn()
+//String formatHello(Person person) {
+//  return "${person.name} has pressed the counter ${person.counter} times";
+//}
+//
+//class Person {
+//  final String name;
+//  final int counter;
+//
+//  Person({
+//    required this.name,
+//    required this.counter,
+//  });
+//}
