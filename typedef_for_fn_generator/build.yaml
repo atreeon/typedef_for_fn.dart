@@ -8,7 +8,7 @@ builders:
   typedef_for_fn:
     target: ":typedef_for_fn_generator"
     import: "package:typedef_for_fn_generator/builder.dart"
-    builder_factories: ["typedefForFnBuilder"]
+    builder_factories: ["typedef_for_fn_generator"]
     build_extensions: {".dart": [".x.g.part"]}
     auto_apply: dependents
     build_to: cache

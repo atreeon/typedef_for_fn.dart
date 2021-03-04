@@ -1,1 +1,1 @@
-See github
+See github or typedef_for_fn_generator

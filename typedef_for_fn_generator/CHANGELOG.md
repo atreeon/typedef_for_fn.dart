@@ -1,3 +1,6 @@
+## 1.0.4-nnbd-3
+- Null safety
+
 ## 1.0.4-nnbd-2
 - Null safety
 
