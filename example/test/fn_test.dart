@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:test/test.dart';
 import 'package:typedef_for_fn/typedef_for_fn.dart';
 
@@ -71,48 +69,48 @@ main() {
     expect(result.toString(), "5");
   });
 
-  test("11", () {
-    blahf11 _blahf11 = (a) => 5;
-    var result = _blahf11(99);
-
-    expect(result.toString(), '5');
-  });
-
-  test("12", () {
-    fn_f12 fn = () => 5;
-    var result = fn();
-
-    expect(result.toString(), '5');
-  });
-
-  test("13", () {
-    fn_f13 fn = <String>(a, {required d}) => 5;
-    var result = fn("blah", d: "blim");
-
-    expect(result.toString(), '5');
-  });
-
-  test("13b", () {
-    fn_f13b fn = <String>(a, {d}) => 5;
-    var result = fn("blah");
-
-    expect(result.toString(), '5');
-  });
-
-  test("14", () {
-    fn_f14 fn = () => "a";
-    var result = fn();
-
-    expect(result.toString(), 'a');
-  });
-
-  test("16", () async {
-    fn_f16 fn = <String>(a, {required d}) => //
-        Future<int>.value(5);
-    var result = await fn("blah", d: "blim");
-
-    expect(result.toString(), '5');
-  });
+//  test("11", () {
+//    blahf11 _blahf11 = (a) => 5;
+//    var result = _blahf11(99);
+//
+//    expect(result.toString(), '5');
+//  });
+//
+//  test("12", () {
+//    fn_f12 fn = () => 5;
+//    var result = fn();
+//
+//    expect(result.toString(), '5');
+//  });
+//
+//  test("13", () {
+//    fn_f13 fn = <String>(a, {required d}) => 5;
+//    var result = fn("blah", d: "blim");
+//
+//    expect(result.toString(), '5');
+//  });
+//
+//  test("13b", () {
+//    fn_f13b fn = <String>(a, {d}) => 5;
+//    var result = fn("blah");
+//
+//    expect(result.toString(), '5');
+//  });
+//
+//  test("14", () {
+//    fn_f14 fn = () => "a";
+//    var result = fn();
+//
+//    expect(result.toString(), 'a');
+//  });
+//
+//  test("16", () async {
+//    fn_f16 fn = <String>(a, {required d}) => //
+//        Future<int>.value(5);
+//    var result = await fn("blah", d: "blim");
+//
+//    expect(result.toString(), '5');
+//  });
 //
 //  //couldn't get this to compile
 //  test("17b", () async {
@@ -201,24 +199,24 @@ int f9(fn_f4 fn, int a) {
   return fn("blah") + 2;
 }
 
-@TypedefForFn(pre: "blah")
-int f11(int a) => a + 2;
-
-@TypedefForFn(exNames: ["a", "b"])
-int f12(int a, String b) => a + 2;
-
-@TypedefForFn(exNames: ["a", "b"])
-int f13<T>(int a, Map<int, String> b, String c, {required T d}) => a + 2;
-
-@TypedefForFn(exNames: ["a", "b"])
-int f13b<T>(int a, Map<int, String> b, String c, {T? d}) => a + 2;
-
-@TypedefForFn(exNames: ["a"])
-String f14(Map<String, int> a) => "blah";
-
-@TypedefForFn(exNames: ["a", "b"])
-Future<int> f16<T>(int a, Map<int, String> b, String c, {required T d}) async =>
-    a + 2;
+//@TypedefForFn(pre: "blah")
+//int f11(int a) => a + 2;
+//
+//@TypedefForFn(exNames: ["a", "b"])
+//int f12(int a, String b) => a + 2;
+//
+//@TypedefForFn(exNames: ["a", "b"])
+//int f13<T>(int a, Map<int, String> b, String c, {required T d}) => a + 2;
+//
+//@TypedefForFn(exNames: ["a", "b"])
+//int f13b<T>(int a, Map<int, String> b, String c, {T? d}) => a + 2;
+//
+//@TypedefForFn(exNames: ["a"])
+//String f14(Map<String, int> a) => "blah";
+//
+//@TypedefForFn(exNames: ["a", "b"])
+//Future<int> f16<T>(int a, Map<int, String> b, String c, {required T d}) async =>
+//    a + 2;
 //
 //@TypedefForFn(exNames: ["a", "b"])
 //Future<int> f16b<T>(int a, Map<int, String> b, String c, {T? d}) async => a + 2;

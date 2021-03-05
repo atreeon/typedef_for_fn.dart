@@ -1,3 +1,6 @@
+## 1.1.0-nullsafety
+- Changed the way it builds
+
 ## 1.0.4-nnbd-3
 - Null safety
 
