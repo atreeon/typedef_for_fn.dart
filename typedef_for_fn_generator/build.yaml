@@ -9,8 +9,8 @@ builders:
     target: ":typedef_for_fn_generator"
     import: "package:typedef_for_fn_generator/typedefForFnBuilder.dart"
     builder_factories: ["typedefForFnBuilder"]
-    build_extensions: {".dart": [".x.g.part"]}
+    build_extensions: {".dart": [".typedef.part"]}
     auto_apply: dependents
-    build_to: cache
+    build_to: source
     applies_builders: ["source_gen|combining_builder"]
-
+    required_inputs: [".valuet2.dart", ".valuet3.dart"]

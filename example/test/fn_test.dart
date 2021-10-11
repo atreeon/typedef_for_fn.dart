@@ -1,7 +1,7 @@
 import 'package:test/test.dart';
 import 'package:typedef_for_fn/typedef_for_fn.dart';
 
-part 'fn_test.g.dart';
+part 'fn_test.typedef.dart';
 
 main() {
   test("1", () {

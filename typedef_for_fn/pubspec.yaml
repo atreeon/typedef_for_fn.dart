@@ -2,6 +2,7 @@ name: typedef_for_fn
 description: Creates a named typedef for each function with the annotation
 version: 1.0.1-nnbd
 homepage: https://github.com/atreeon/typedef_for_fn
+publish_to: none
 
 environment:  
   sdk: ">=2.12.0-0 <3.0.0"

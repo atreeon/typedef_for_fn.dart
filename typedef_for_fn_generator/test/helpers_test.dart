@@ -1,3 +1,4 @@
+import 'package:generator_common/NameType.dart';
 import 'package:generator_common/classes.dart';
 import 'package:test/test.dart';
 import 'package:typedef_for_fn_generator/src/helpers.dart';
@@ -8,8 +9,8 @@ void main() {
       var methodDetails = MethodDetails(
         "///blah",
         "methodName",
-        [NameTypeWithComment("param1", "String")],
-        [NameTypeWithComment("param2", "int")],
+        [NameTypeClassCommentData("param1", "String", null)],
+        [NameTypeClassCommentData("param2", "int", null)],
         [],
         "List<String>",
       );
@@ -27,8 +28,8 @@ required int param2})""");
       var methodDetails = MethodDetails(
         "///blah",
         "methodName",
-        [NameTypeWithComment("param1", "String")],
-        [NameTypeWithComment("param2", "int")],
+        [NameTypeClassCommentData("param1", "String", null)],
+        [NameTypeClassCommentData("param2", "int", null)],
         [GenericsNameType("T", "int")],
         "T",
       );

@@ -16,7 +16,7 @@ String getFunctionDefinition(
 
   var strParamsNamed = methodDetails.paramsNamed
       .map((x) => //
-          x.type.contains("?") //
+          x.type!.contains("?") //
               ? "${formattedComment(x.comment)}${x.type} ${x.name}"
               : "${formattedComment(x.comment)}required ${x.type} ${x.name}")
       .join(",\n");
@@ -36,7 +36,12 @@ String getFunctionDefinition(
 
   var genericsFormatted = methodDetails.generics.length > 0 ? "<${genericList}>" : "";
 
-  return "${methodDetails.returnType} Function${genericsFormatted}(\n$params)";
+  var result = "${methodDetails.returnType} Function${genericsFormatted}(\n$params)";
+
+  if (methodDetails.methodComment == null || methodDetails.methodComment!.length == 0) //
+    return result;
+
+  return "${methodDetails.methodComment}\n${result}";
 }
 
 String formattedComment(String? comment) {
